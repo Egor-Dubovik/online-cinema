@@ -6,4 +6,5 @@ export const ERROR_MESSAGE = {
 	USER_NOT_FOUND: 'User not found',
 	PASSWORD: 'Invalid password',
 	LOGIN: 'Please sign in!',
+	NO_RIGHTS: 'You have no rights!',
 };

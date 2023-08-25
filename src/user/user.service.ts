@@ -1,4 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from 'nestjs-typegoose';
+import { UserModel } from './user.model';
 
 @Injectable()
-export class UserService {}
+export class UserService {
+	constructor(@InjectModel(UserModel) private readonly userModel: UserModel) {}
+	async byId() {
+		return { email: 'asdf' };
+	}
+}

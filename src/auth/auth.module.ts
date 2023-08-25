@@ -6,10 +6,11 @@ import { UserModel } from 'src/user/user.model';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { getJWTConfig } from 'src/config/jwt.config';
-import { JwtStrategy } from './strategies/jet.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
 	imports: [
+		ConfigModule,
 		TypegooseModule.forFeature([
 			{
 				typegooseClass: UserModel,
@@ -18,7 +19,6 @@ import { JwtStrategy } from './strategies/jet.strategy';
 				},
 			},
 		]),
-		ConfigModule,
 		JwtModule.registerAsync({
 			imports: [ConfigModule],
 			inject: [ConfigService],
