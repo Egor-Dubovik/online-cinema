@@ -8,19 +8,19 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      envFilePath: '.env',
-    }),
-    TypegooseModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: getMongoDbConfig,
-    }),
-    AuthModule,
-    UserModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+	imports: [
+		ConfigModule.forRoot({
+			envFilePath: '.env',
+		}),
+		TypegooseModule.forRootAsync({
+			imports: [ConfigModule],
+			inject: [ConfigService],
+			useFactory: getMongoDbConfig,
+		}),
+		AuthModule,
+		UserModule,
+	],
+	controllers: [AppController],
+	providers: [AppService],
 })
 export class AppModule {}
