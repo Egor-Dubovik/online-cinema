@@ -2,15 +2,17 @@ import { Types } from 'mongoose';
 
 export type TypeRole = 'user' | 'admin' | undefined;
 
-export interface IUser extends ITokens {
+export type TypeUser = {
 	user: {
 		_id: Types.ObjectId;
 		email: string;
 		isAdmin: boolean;
 	};
-}
+	refreshToken: string;
+	accessToken: string;
+};
 
-export interface ITokens {
+export interface TypeTokens {
 	refreshToken: string;
 	accessToken: string;
 }
