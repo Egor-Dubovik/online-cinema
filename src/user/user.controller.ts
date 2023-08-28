@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Param, Put, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+	Body,
+	Controller,
+	Get,
+	Param,
+	Put,
+	Query,
+	Delete,
+	UsePipes,
+	ValidationPipe,
+} from '@nestjs/common';
 import { Auth } from 'src/auth/decorators/auth.decorators';
 import { IdValidationPipe } from 'src/pipes/idValidation.pipe';
 import { User } from './decorators/user.decorator';
@@ -15,6 +25,24 @@ export class UserController {
 		return this.userService.byId(_id);
 	}
 
+	@Get('count')
+	@Auth('admin')
+	async getCount() {
+		return this.userService.getCount();
+	}
+
+	@Get()
+	@Auth('admin')
+	async getUsers(@Query('searchTerm') searchTerm?: string) {
+		return this.userService.getAll(searchTerm);
+	}
+
+	@Get(':id')
+	@Auth()
+	async getUser(@Param('_id') _id: string) {
+		return this.userService.byId(_id);
+	}
+
 	@UsePipes(new ValidationPipe())
 	@Put('profile')
 	@Auth()
@@ -27,5 +55,12 @@ export class UserController {
 	@Auth('admin')
 	async updateUser(@Param('id', IdValidationPipe) _id: string, @Body() dto: UserUpdateDto) {
 		return this.userService.updateProfile(_id, dto, true);
+	}
+
+	@UsePipes(new ValidationPipe())
+	@Delete(':id')
+	@Auth('admin')
+	async delete(@Param('id', IdValidationPipe) _id: string) {
+		return this.userService.delete(_id);
 	}
 }
