@@ -3,8 +3,10 @@ import { JwtService } from '@nestjs/jwt';
 import { ModelType } from '@typegoose/typegoose/lib/types';
 import { compare, genSalt, hash } from 'bcryptjs';
 import { InjectModel } from 'nestjs-typegoose';
+import { REFR_TOKEN_DURATION, SUCC_TOKEN_DURATION } from 'src/constant/jwt';
 import { ERROR_MESSAGE } from 'src/constant/message/error.message';
 import { SALT_NUM } from 'src/constant/numbers';
+import { HashingService } from 'src/hashing/hashing.service';
 import { UserModel } from 'src/user/user.model';
 import { AuthDto } from './dto/auth.dto';
 import { RefreshTokenDto } from './dto/refreshToken.dto';
@@ -14,6 +16,7 @@ export class AuthService {
 	constructor(
 		@InjectModel(UserModel) private readonly UserModel: ModelType<UserModel>,
 		private readonly jwtService: JwtService,
+		private readonly hashingService: HashingService,
 	) {}
 
 	async register(dto: AuthDto) {
@@ -39,11 +42,6 @@ export class AuthService {
 		return { user: this.returnUserFields(user), ...tokens };
 	}
 
-	async hashPassword(password: string) {
-		const salt = await genSalt(SALT_NUM);
-		return hash(password, salt);
-	}
-
 	async validateUser(dto: AuthDto) {
 		const user = await this.UserModel.findOne({ email: dto.email });
 		if (!user) throw new UnauthorizedException(ERROR_MESSAGE.USER_NOT_FOUND);
@@ -55,7 +53,7 @@ export class AuthService {
 	async createUserInDb(dto: AuthDto) {
 		const newUser = new this.UserModel({
 			email: dto.email,
-			password: await this.hashPassword(dto.password),
+			password: await this.hashingService.hashPassword(dto.password),
 		});
 		await newUser.save();
 		return newUser;
@@ -63,8 +61,8 @@ export class AuthService {
 
 	async issueJWTTokenPair(userId: string) {
 		const data = { _id: userId };
-		const refreshToken = await this.jwtService.signAsync(data, { expiresIn: '15d' });
-		const accessToken = await this.jwtService.signAsync(data, { expiresIn: '3h' });
+		const refreshToken = await this.jwtService.signAsync(data, { expiresIn: REFR_TOKEN_DURATION });
+		const accessToken = await this.jwtService.signAsync(data, { expiresIn: SUCC_TOKEN_DURATION });
 		return { refreshToken, accessToken };
 	}
 

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypegooseModule } from 'nestjs-typegoose';
+import { HashingService } from 'src/hashing/hashing.service';
 import { UserController } from './user.controller';
 import { UserModel } from './user.model';
 import { UserService } from './user.service';
@@ -18,6 +19,6 @@ import { UserService } from './user.service';
 		ConfigModule,
 	],
 	controllers: [UserController],
-	providers: [UserService],
+	providers: [UserService, HashingService],
 })
 export class UserModule {}

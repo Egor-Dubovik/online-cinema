@@ -7,4 +7,5 @@ export const ERROR_MESSAGE = {
 	PASSWORD: 'Invalid password',
 	LOGIN: 'Please sign in!',
 	NO_RIGHTS: 'You have no rights!',
+	INVALID_ID: 'Invalid format id!',
 };

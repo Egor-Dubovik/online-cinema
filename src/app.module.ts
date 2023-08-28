@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { getMongoDbConfig } from './config/mongo.config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { HashingService } from './hashing/hashing.service';
 
 @Module({
 	imports: [
@@ -21,6 +22,6 @@ import { UserModule } from './user/user.module';
 		UserModule,
 	],
 	controllers: [AppController],
-	providers: [AppService],
+	providers: [AppService, HashingService],
 })
 export class AppModule {}
