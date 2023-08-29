@@ -27,27 +27,34 @@ export class MovieService {
 	}
 
 	async getBySlug(slug: string) {
-		const movie = await this.MovieModel.findOne({ slug }).populate('actors genres').exec();
+		const movie = await this.MovieModel.findOne({ slug }).populate('actors genres');
 		if (!movie) throw new NotFoundException(ERROR_MESSAGE.MOVIE_NOT_FOUND);
 		return movie;
 	}
 
 	async getByActor(actorId: string) {
-		const movies = await this.MovieModel.find({ actors: actorId }).exec();
+		const movies = await this.MovieModel.find({ actors: actorId });
 		if (!movies) throw new NotFoundException(ERROR_MESSAGE.MOVIE_NOT_FOUND);
 		return movies;
 	}
 
 	async getByGenreIds(genreIds: Types.ObjectId[]) {
-		const movies = await this.MovieModel.find({ genres: { $in: genreIds } }).exec();
+		const movies = await this.MovieModel.find({ genres: { $in: genreIds } });
 		if (!movies) throw new NotFoundException(ERROR_MESSAGE.MOVIE_NOT_FOUND);
 		return movies;
 	}
 
 	async getById(_id: string) {
-		const movie = this.MovieModel.findById(_id);
+		const movie = await this.MovieModel.findById(_id);
 		if (!movie) throw new NotFoundException(ERROR_MESSAGE.MOVIE_NOT_FOUND);
 		return movie;
+	}
+
+	async getMostPopular() {
+		return this.MovieModel.find({ countOpened: { $gt: 0 } })
+			.sort({ countOpened: -1 })
+			.populate('genres')
+			.exec();
 	}
 
 	async createDefault() {
@@ -58,7 +65,7 @@ export class MovieService {
 
 	async update(_id: string, dto: MovieDto) {
 		// todo tg notification
-		const movie = await this.MovieModel.findByIdAndUpdate(_id, dto, { new: true }).exec();
+		const movie = await this.MovieModel.findByIdAndUpdate(_id, dto, { new: true });
 		if (!movie) throw new NotFoundException(ERROR_MESSAGE.MOVIE_NOT_FOUND);
 		return movie;
 	}
@@ -67,7 +74,7 @@ export class MovieService {
 		const movie = await this.MovieModel.findByIdAndUpdate(
 			{ slug },
 			{ $inc: { countOpened: MOVIE_INCREMENT } },
-		).exec();
+		);
 		if (!movie) throw new NotFoundException(ERROR_MESSAGE.MOVIE_NOT_FOUND);
 		return movie;
 	}
