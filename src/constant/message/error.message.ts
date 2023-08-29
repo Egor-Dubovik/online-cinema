@@ -8,4 +8,5 @@ export const ERROR_MESSAGE = {
 	LOGIN: 'Please sign in!',
 	NO_RIGHTS: 'You have no rights!',
 	INVALID_ID: 'Invalid format id!',
+	GENRE_NOT_FOUND: 'Genre not found',
 };

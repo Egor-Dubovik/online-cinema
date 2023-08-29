@@ -7,6 +7,7 @@ import { getMongoDbConfig } from './config/mongo.config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { HashingService } from './hashing/hashing.service';
+import { GenreModule } from './genre/genre.module';
 
 @Module({
 	imports: [
@@ -20,6 +21,7 @@ import { HashingService } from './hashing/hashing.service';
 		}),
 		AuthModule,
 		UserModule,
+		GenreModule,
 	],
 	controllers: [AppController],
 	providers: [AppService, HashingService],
