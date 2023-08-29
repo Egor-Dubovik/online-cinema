@@ -55,4 +55,26 @@ export class MovieService {
 		const movie = await this.MovieModel.create(defaultValue);
 		return movie._id;
 	}
+
+	async update(_id: string, dto: MovieDto) {
+		// todo tg notification
+		const movie = await this.MovieModel.findByIdAndUpdate(_id, dto, { new: true }).exec();
+		if (!movie) throw new NotFoundException(ERROR_MESSAGE.MOVIE_NOT_FOUND);
+		return movie;
+	}
+
+	async updateCountOpened(slug: string) {
+		const movie = await this.MovieModel.findByIdAndUpdate(
+			{ slug },
+			{ $inc: { countOpened: MOVIE_INCREMENT } },
+		).exec();
+		if (!movie) throw new NotFoundException(ERROR_MESSAGE.MOVIE_NOT_FOUND);
+		return movie;
+	}
+
+	async delete(id: string) {
+		const movie = await this.MovieModel.findByIdAndDelete(id);
+		if (!movie) throw new NotFoundException(ERROR_MESSAGE.MOVIE_NOT_FOUND);
+		return movie;
+	}
 }
