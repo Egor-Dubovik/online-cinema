@@ -39,7 +39,7 @@ export class MovieModel extends TimeStamps {
 
 	@prop()
 	@ApiProperty({ example: 'Spider-Man' })
-	title: boolean;
+	title: string;
 
 	@prop()
 	@ApiProperty({ example: 'some description' })

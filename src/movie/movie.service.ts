@@ -5,7 +5,7 @@ import { InjectModel } from 'nestjs-typegoose';
 import { ERROR_MESSAGE } from 'src/constant/message/error.message';
 import { DEFAULT_MOVIE_FIELDS } from 'src/constant/movie';
 import { MOVIE_INCREMENT } from 'src/constant/numbers';
-import { MovieDto } from './movie.dto';
+import { MovieDto } from './dto/movie.dto';
 import { MovieModel } from './movie.model';
 
 @Injectable()
@@ -32,7 +32,7 @@ export class MovieService {
 		return movie;
 	}
 
-	async getByActor(actorId: string) {
+	async getByActor(actorId: Types.ObjectId) {
 		const movies = await this.MovieModel.find({ actors: actorId });
 		if (!movies) throw new NotFoundException(ERROR_MESSAGE.MOVIE_NOT_FOUND);
 		return movies;
@@ -71,9 +71,10 @@ export class MovieService {
 	}
 
 	async updateCountOpened(slug: string) {
-		const movie = await this.MovieModel.findByIdAndUpdate(
+		const movie = await this.MovieModel.findOneAndUpdate(
 			{ slug },
 			{ $inc: { countOpened: MOVIE_INCREMENT } },
+			{ new: true },
 		);
 		if (!movie) throw new NotFoundException(ERROR_MESSAGE.MOVIE_NOT_FOUND);
 		return movie;
