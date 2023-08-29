@@ -38,9 +38,9 @@ export class UserController {
 	}
 
 	@Get(':id')
-	@Auth()
-	async getUser(@Param('_id') _id: string) {
-		return this.userService.byId(_id);
+	@Auth('admin')
+	async getUser(@Param('id') id: string) {
+		return this.userService.byId(id);
 	}
 
 	@UsePipes(new ValidationPipe())
