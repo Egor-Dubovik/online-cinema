@@ -29,7 +29,7 @@ export class MovieDto {
 	parameters?: Parameter;
 
 	@IsString()
-	videoUrl: string[];
+	videoUrl: string;
 
 	@IsArray()
 	@IsString({ each: true })
