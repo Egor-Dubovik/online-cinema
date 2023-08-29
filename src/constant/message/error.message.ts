@@ -9,4 +9,5 @@ export const ERROR_MESSAGE = {
 	NO_RIGHTS: 'You have no rights!',
 	INVALID_ID: 'Invalid format id!',
 	GENRE_NOT_FOUND: 'Genre not found',
+	ACTOR_NOT_FOUND: 'Actor not found',
 };

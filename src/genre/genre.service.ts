@@ -10,7 +10,9 @@ export class GenreService {
 	constructor(@InjectModel(GenreModel) private readonly GenreModel: ModelType<GenreModel>) {}
 
 	async getBySlug(slug: string) {
-		return this.GenreModel.findOne({ slug }).exec();
+		const genre = await this.GenreModel.findOne({ slug }).exec();
+		if (!genre) throw new NotFoundException(ERROR_MESSAGE.GENRE_NOT_FOUND);
+		return genre;
 	}
 
 	async getAll(searchTerm?: string) {

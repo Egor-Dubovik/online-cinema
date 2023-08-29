@@ -1,5 +1,5 @@
-import { Controller, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { Controller, Post, Query, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { Auth } from 'src/auth/decorators/auth.decorators';
 import { FileService } from './file.service';
 
@@ -9,8 +9,8 @@ export class FileController {
 
 	@Post()
 	@Auth('admin')
-	@UseInterceptors(FileInterceptor('file'))
-	async saveFiles(@UploadedFile() file: Express.Multer.File, @Query('folder') folder?: string) {
-		return this.fileService.saveFiles([file], folder);
+	@UseInterceptors(FilesInterceptor('file'))
+	async saveFiles(@UploadedFiles() file: Express.Multer.File[], @Query('folder') folder?: string) {
+		return this.fileService.saveFiles(file, folder);
 	}
 }
