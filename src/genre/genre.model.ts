@@ -13,11 +13,11 @@ export class GenreModel extends TimeStamps {
 	@ApiProperty({ example: 'thriller' })
 	name: string;
 
-	@prop({ unique: true })
+	@prop()
 	@ApiProperty({ example: 'slug' })
 	slug: string;
 
-	@prop({ default: false })
+	@prop()
 	@ApiProperty({ example: 'Some description.' })
 	description: string;
 
