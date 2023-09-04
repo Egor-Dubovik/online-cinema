@@ -40,8 +40,6 @@ export class ActorService {
 			.exec();
 	}
 
-	// todo aggregation
-
 	async getById(_id: string) {
 		const actor = this.ActorModel.findById(_id);
 		if (!actor) throw new NotFoundException(ERROR_MESSAGE.ACTOR_NOT_FOUND);
