@@ -1,7 +1,8 @@
 import { Base, TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 import { ApiProperty } from '@nestjs/swagger';
-import { prop } from '@typegoose/typegoose';
+import { prop, Ref } from '@typegoose/typegoose';
 import { Types } from 'mongoose';
+import { MovieModel } from 'src/movie/movie.model';
 
 export interface UserModel extends Base {}
 
@@ -21,6 +22,6 @@ export class UserModel extends TimeStamps {
 	@ApiProperty({ example: 'false', description: 'Boolean value' })
 	isAdmin?: boolean;
 
-	@prop({ default: [] })
-	favorites?: [];
+	@prop({ default: [], ref: () => MovieModel })
+	favorites?: Ref<MovieModel>[];
 }

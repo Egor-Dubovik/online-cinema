@@ -9,10 +9,12 @@ import {
 	UsePipes,
 	ValidationPipe,
 } from '@nestjs/common';
+import { Types } from 'mongoose';
 import { Auth } from 'src/auth/decorators/auth.decorators';
 import { IdValidationPipe } from 'src/pipes/idValidation.pipe';
 import { User } from './decorators/user.decorator';
 import { UserUpdateDto } from './dto/updateUser.dto';
+import { UserModel } from './user.model';
 import { UserService } from './user.service';
 
 @Controller('users')
@@ -62,5 +64,20 @@ export class UserController {
 	@Auth('admin')
 	async delete(@Param('id', IdValidationPipe) _id: string) {
 		return this.userService.delete(_id);
+	}
+
+	@Get('profile/favorites')
+	@Auth()
+	async getFavorites(@User('_id') _id: Types.ObjectId) {
+		return this.userService.getFavoritesMovies(_id);
+	}
+
+	@Put('profile/favorites')
+	@Auth()
+	async toggleFavorites(
+		@Body('movieId', IdValidationPipe) movieId: Types.ObjectId,
+		@User() user: UserModel,
+	) {
+		return this.userService.toggleFavorites(movieId, user);
 	}
 }
