@@ -87,6 +87,10 @@ export class MovieService {
 		return movie;
 	}
 
+	async updateRating(id: Types.ObjectId, rating: number) {
+		return this.MovieModel.findByIdAndUpdate(id, { rating }, { new: true }).exec();
+	}
+
 	async delete(id: string) {
 		const movie = await this.MovieModel.findByIdAndDelete(id);
 		if (!movie) throw new NotFoundException(ERROR_MESSAGE.MOVIE_NOT_FOUND);

@@ -12,6 +12,8 @@ import { FileModule } from './file/file.module';
 import { ActorModule } from './actor/actor.module';
 import { MovieModule } from './movie/movie.module';
 import { TelegramModule } from './telegram/telegram.module';
+import { RatingModule } from './rating/rating.module';
+
 
 @Module({
 	imports: [
@@ -30,6 +32,8 @@ import { TelegramModule } from './telegram/telegram.module';
 		ActorModule,
 		MovieModule,
 		TelegramModule,
+		RatingModule,
+
 	],
 	controllers: [AppController],
 	providers: [AppService, HashingService],
