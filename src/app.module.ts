@@ -11,6 +11,7 @@ import { GenreModule } from './genre/genre.module';
 import { FileModule } from './file/file.module';
 import { ActorModule } from './actor/actor.module';
 import { MovieModule } from './movie/movie.module';
+import { TelegramModule } from './telegram/telegram.module';
 
 @Module({
 	imports: [
@@ -28,6 +29,7 @@ import { MovieModule } from './movie/movie.module';
 		FileModule,
 		ActorModule,
 		MovieModule,
+		TelegramModule,
 	],
 	controllers: [AppController],
 	providers: [AppService, HashingService],

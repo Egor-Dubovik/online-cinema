@@ -5,12 +5,16 @@ import { InjectModel } from 'nestjs-typegoose';
 import { ERROR_MESSAGE } from 'src/constant/message/error.message';
 import { DEFAULT_MOVIE_FIELDS } from 'src/constant/movie';
 import { MOVIE_INCREMENT } from 'src/constant/numbers';
+import { TelegramService } from '../telegram/telegram.service';
 import { MovieDto } from './dto/movie.dto';
 import { MovieModel } from './movie.model';
 
 @Injectable()
 export class MovieService {
-	constructor(@InjectModel(MovieModel) private readonly MovieModel: ModelType<MovieModel>) {}
+	constructor(
+		@InjectModel(MovieModel) private readonly MovieModel: ModelType<MovieModel>,
+		private readonly telegramService: TelegramService,
+	) {}
 
 	async getAll(searchTerm?: string) {
 		let options = {};
@@ -64,7 +68,10 @@ export class MovieService {
 	}
 
 	async update(_id: string, dto: MovieDto) {
-		// todo tg notification
+		if (!dto.isSendTelegram) {
+			await this.sendNotification(dto);
+			dto.isSendTelegram = true;
+		}
 		const movie = await this.MovieModel.findByIdAndUpdate(_id, dto, { new: true });
 		if (!movie) throw new NotFoundException(ERROR_MESSAGE.MOVIE_NOT_FOUND);
 		return movie;
@@ -84,5 +91,30 @@ export class MovieService {
 		const movie = await this.MovieModel.findByIdAndDelete(id);
 		if (!movie) throw new NotFoundException(ERROR_MESSAGE.MOVIE_NOT_FOUND);
 		return movie;
+	}
+
+	async sendNotification(dto: MovieDto) {
+		// if (process.env.NODE_ENV !== 'development') {
+		// 	await this.telegramService.sendPhoto(dto.poster);
+		// }
+
+		await this.telegramService.sendPhoto(
+			'https://cdn.marvel.com/content/1x/antmanandthewaspquantumania_lob_crd_03.jpg',
+		);
+
+		const msg = `<b>${dto.title}</b>\n${dto.description}`;
+
+		await this.telegramService.sendMessage(msg, {
+			reply_markup: {
+				inline_keyboard: [
+					[
+						{
+							url: 'https://okko.tv/movie/free-guy',
+							text: '🍿 Go to watch',
+						},
+					],
+				],
+			},
+		});
 	}
 }
