@@ -1,11 +1,10 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ModelType } from '@typegoose/typegoose/lib/types';
-import { compare, genSalt, hash } from 'bcryptjs';
+import { compare } from 'bcryptjs';
 import { InjectModel } from 'nestjs-typegoose';
 import { REFR_TOKEN_DURATION, SUCC_TOKEN_DURATION } from 'src/constant/jwt';
 import { ERROR_MESSAGE } from 'src/constant/message/error.message';
-import { SALT_NUM } from 'src/constant/numbers';
 import { HashingService } from 'src/hashing/hashing.service';
 import { UserModel } from 'src/user/user.model';
 import { AuthDto } from './dto/auth.dto';

@@ -22,3 +22,5 @@ import { UserService } from './user.service';
 	providers: [UserService, HashingService],
 })
 export class UserModule {}
+
+
