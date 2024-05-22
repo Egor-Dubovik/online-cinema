@@ -45,8 +45,8 @@ export class MovieModel extends TimeStamps {
 	@ApiProperty({ example: 'some description' })
 	description: string;
 
-	@prop({ default: 7.0 })
-	@ApiProperty({ example: 7.0, description: 'Movie rating from 0 to 10' })
+	@prop({ default: 0 })
+	@ApiProperty({ example: 5, description: 'Movie rating from 0 to 5' })
 	rating?: number;
 
 	@prop()

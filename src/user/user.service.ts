@@ -27,7 +27,8 @@ export class UserService {
 			throw new NotFoundException(ERROR_MESSAGE.EMAIL_EXIST);
 		if (dto.email) user.email = dto.email;
 		if (dto.password) user.password = await this.hashingService.hashPassword(dto.password);
-		if ((dto.isAdmin !== undefined && user.isAdmin) || isAdmin) user.isAdmin = dto.isAdmin;
+		if ((dto.isAdmin !== undefined && user.isAdmin) || (dto.isAdmin !== undefined && isAdmin))
+			user.isAdmin = dto.isAdmin;
 		await user.save();
 	}
 
